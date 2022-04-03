@@ -16,15 +16,15 @@ public class ListGraph<T> implements Graph<T>, Serializable {
     }
     
     public Set<T> getNodes(){
-        
+        //return set;
     }
     
     public Collection<Edge<T>> getEdgesFrom(T node){
-        
+        //return collection;
     }
     
     public Edge<T> getEdgeBetween(T node1, T node2){
-        
+        //return edge;
     }
     
     public void disconnect(T node1, T node2){
@@ -36,10 +36,10 @@ public class ListGraph<T> implements Graph<T>, Serializable {
     }
     
     public boolean pathExists(T from, T to){
-        
+        //return boolean;
     }
     
     public List<Edge<T>> getPath(T from, T to){
-        
+        //return list;
     }
 }
