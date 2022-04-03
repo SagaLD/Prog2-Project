@@ -3,7 +3,7 @@ package Prog2;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-// hello there test comment
+
 public interface Graph<T> {
 
     void add(T node);
