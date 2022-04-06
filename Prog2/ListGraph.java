@@ -7,7 +7,7 @@ public class ListGraph<T> implements Graph<T>, Serializable {
 
     //lista med noder?
     ArrayList<ArrayList<Integer>> graphList = new ArrayList<ArrayList<Integer>>(5);
-    
+        //gör en hashList-Map-Set?
     
     public void add(T node){
         // Takes a node as argument and add it to the graph. If it already exists - then don't change anything
