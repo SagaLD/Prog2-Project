@@ -52,6 +52,7 @@ public class ListGraph<T> implements Graph<T>, Serializable {
     
     public Collection<Edge<T>> getEdgesFrom(T node){
         //the method takes a node and returns a copy of the collection of all edges leading from this node. 
+            //kolla föreläsning 6s kod!
         
         //If the node is missing in the graph, the exception should be NoSuchElementException is generated.
     }
