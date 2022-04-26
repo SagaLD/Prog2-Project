@@ -158,7 +158,7 @@ public class ListGraph<T> implements Graph<T>, Serializable {
         
          //In the simplest variant it is therefore sufficient that the method returns some path between the two nodes, 
          //but voluntarily one can make a solution where returns the shortest path (in the number of edges that must be crossed) or the fastest route (taking into account taken to the weights of the edges).
-         List<Edge> edges = new List<>();
-         return edge;
+         List<Edge> edges = new ArrayList<Edge>();
+         return edges;
     }
 }
