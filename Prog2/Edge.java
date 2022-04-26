@@ -7,34 +7,24 @@ public class Edge<T> implements Serializable {
     between two nodes. Values for all instance variables in this class should be passed as
     argument to the constructor.*/
     
-    private T destinationToNode;
-    //private T destinationFromNode;
-    private String name;
-    private int weight;
+    private final City destination;
+    private final String name;
+    private final double weight; //"length"
 
-    public Edge (T destinationToNode, String name, int weight){
+    public Edge (City destination, String name, double weight){
         //this.destinationFromNode = destinationFromNode;
-        this.destinationToNode = destinationToNode;
-        this.name = name;
+        this.destination = Objects.requireNonNull(destination);
+        this.name = Objects.requireNonNull(name);
+
+        if (Double.isNaN(weight))
+            throw new IllegalArgumentException("weight assigned for Edge is Not a Number (NaN)");
+
         this.weight = weight;
     }
 
-    public T getDestination(){
+    public City getDestination(){
         //return the node that the edge points at
-        return destinationToNode;
-    }
-
-    public int getWeight(){
-        //returns the edge weight
-        return weight;
-    }
-
-    public void setWeight(int newWeight){
-        //takes an integer and sets the weight of the edge to this integer. If the weight is negative, the IllegalArgumentException exception should be generated.
-        if (newWeight < 0)
-            throw new IllegalArgumentException();
-
-        this.weight = newWeight;
+        return destination;
     }
 
     public String getName(){
@@ -42,8 +32,26 @@ public class Edge<T> implements Serializable {
         return name;
     }
 
+    public double getWeight(){
+        //returns the edge weight
+        return weight;
+    }
+
+    //IS IT WORKING????
+    public boolean equals(Object edgeToCompare){
+        if(edgeToCompare instanceof Edge edge){
+            return Object.equals(name, edge.name) && Object.equals(destination, edge.destination);
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return Objects.hash(name, destination);
+    }
+
+    @Override
     public String toString(){
         //returns a string with edge information.
-        return "Edge " + name + " to " + destinationToNode + "( weight: " + weight + " )";
+        return "Edge[" + name + " to " + destination + "( weight: " + weight + " )]";
     }
 }
