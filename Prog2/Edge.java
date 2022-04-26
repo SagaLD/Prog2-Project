@@ -2,7 +2,7 @@ package Prog2;
 import java.io.Serializable;
 import java.util.*;
 
-public class Edge<T> implements Serializable {
+public class Edge implements Serializable {
     /*The Edge class should represent an edge, that is, one direction of a connection
     between two nodes. Values for all instance variables in this class should be passed as
     argument to the constructor.*/
@@ -40,7 +40,8 @@ public class Edge<T> implements Serializable {
     //IS IT WORKING????
     public boolean equals(Object edgeToCompare){
         if(edgeToCompare instanceof Edge edge){
-            return Object.equals(name, edge.name) && Object.equals(destination, edge.destination);
+            //return Object.equals(name, edge.name) && Object.equals(destination, edge.destination);
+            return name.equals(edge.name) && destination.equals(edge.destination);
         }
         return false;
     }

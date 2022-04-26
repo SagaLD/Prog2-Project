@@ -14,9 +14,9 @@ public interface Graph<T> {
     
     Set<T> getNodes();
     
-    Collection<Edge<T>> getEdgesFrom(T node);
+    Collection<Edge> getEdgesFrom(T node);
     
-    Edge<T> getEdgeBetween(T node1, T node2);
+    Edge getEdgeBetween(T node1, T node2);
     
     void disconnect(T node1, T node2);
     
@@ -24,6 +24,6 @@ public interface Graph<T> {
     
     boolean pathExists(T from, T to);
     
-    List<Edge<T>> getPath(T from, T to);
+    List<Edge> getPath(T from, T to);
 }
 
