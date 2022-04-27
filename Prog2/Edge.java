@@ -2,7 +2,7 @@ package Prog2;
 import java.io.Serializable;
 import java.util.*;
 
-public class Edge implements Serializable {
+public class Edge<T> implements Serializable {
     /*The Edge class should represent an edge, that is, one direction of a connection
     between two nodes. Values for all instance variables in this class should be passed as
     argument to the constructor.*/
@@ -32,9 +32,9 @@ public class Edge implements Serializable {
         return name;
     }
 
-    public double getWeight(){
+    public int getWeight(){
         //returns the edge weight
-        return weight;
+        return (int) weight;
     }
 
     //IS IT WORKING????
