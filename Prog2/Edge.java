@@ -6,12 +6,12 @@ public class Edge<T> implements Serializable {
     /*The Edge class should represent an edge, that is, one direction of a connection
     between two nodes. Values for all instance variables in this class should be passed as
     argument to the constructor.*/
-    
-    private final City destination;
+
+    private final T destination;
     private final String name;
     private final double weight; //"length"
 
-    public Edge (City destination, String name, double weight){
+    public Edge (T destination, String name, double weight){
         //this.destinationFromNode = destinationFromNode;
         this.destination = Objects.requireNonNull(destination);
         this.name = Objects.requireNonNull(name);
@@ -22,7 +22,7 @@ public class Edge<T> implements Serializable {
         this.weight = weight;
     }
 
-    public City getDestination(){
+    public T getDestination(){
         //return the node that the edge points at
         return destination;
     }

@@ -53,17 +53,13 @@ public class ListGraph<T> implements Graph<T>, Serializable {
             throw new IllegalStateException("Edge already exists between " + cityOne + " and " + cityTwo + "!");
         }
 
-        /* //adds the cities to the hashMap
-        add(cityOne);
-        add(cityTwo); */
-
         // Then we get the cities edges
         Set<Edge> cityOneEdges = nodes.get(cityOne);
         Set<Edge> cityTwoEdges = nodes.get(cityTwo);
 
         //add the new edge in the Sets
-        cityOneEdges.add(new Edge((City) cityTwo, name, weight));
-        cityTwoEdges.add(new Edge((City) cityOne, name, weight));
+        cityOneEdges.add(new Edge(cityTwo, name, weight));
+        cityTwoEdges.add(new Edge(cityOne, name, weight));
     }
 
     public void disconnect(T nodeOne, T nodeTwo){
@@ -107,7 +103,7 @@ public class ListGraph<T> implements Graph<T>, Serializable {
 
         //Convert Map keys to Set
         Set<T> keySet = (Set<T>) new HashSet<T>(nodes.keySet());
-        keySet.forEach(key -> System.out.println(key));
+        //keySet.forEach(key -> System.out.println(key));
 
         return (Set<T>) keySet;
     }
@@ -118,9 +114,8 @@ public class ListGraph<T> implements Graph<T>, Serializable {
             throw new NoSuchElementException("No such node in the map");
         }
 
-        //the method takes a node and returns a copy of the collection of all edges leading from this node. 
-        Set<Edge> edges = nodes.get(node);
-        return edges;
+        //the method takes a node and returns a copy of the collection of all edges leading from this node.
+        return nodes.get(node);
     }
 
     public Edge getEdgeBetween(T cityOne, T cityTwo){
@@ -129,7 +124,7 @@ public class ListGraph<T> implements Graph<T>, Serializable {
             throw new NoSuchElementException("One of those cities is not in the map");
         }
 
-        //takes two nodes and returns the edge between these nodes. 
+        //takes two nodes and returns the edge between these nodes.
         for (Edge edge : nodes.get(cityOne)){
             if(edge.getDestination().equals(cityTwo))
                 return edge;
@@ -143,8 +138,7 @@ public class ListGraph<T> implements Graph<T>, Serializable {
     public String toString(){
         // toString - returns a long string with strings taken from the toString methods of the nodes and the toString methods of the edges.
         // Preferably with line breaks so that you get information about one node per line for improved readability.
-        String s = nodes.toString();
-        return s;
+        return nodes.toString();
     }
 
     public boolean pathExists(T from, T to){
@@ -158,7 +152,6 @@ public class ListGraph<T> implements Graph<T>, Serializable {
 
         //In the simplest variant it is therefore sufficient that the method returns some path between the two nodes,
         //but voluntarily one can make a solution where returns the shortest path (in the number of edges that must be crossed) or the fastest route (taking into account taken to the weights of the edges).
-        List<Edge> edges = new ArrayList<Edge>();
-        return edges;
+        return new ArrayList<>();
     }
 }
