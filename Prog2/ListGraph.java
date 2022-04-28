@@ -108,14 +108,15 @@ public class ListGraph<T> implements Graph<T>, Serializable {
         return (Set<T>) keySet;
     }
 
-    public Collection<Edge> getEdgesFrom(T node){
+    public Collection<Edge<T>> getEdgesFrom(T node){
         //If the node is missing in the graph, the exception should be NoSuchElementException is generated.
         if(!nodes.containsKey(node)){
             throw new NoSuchElementException("No such node in the map");
         }
 
         //the method takes a node and returns a copy of the collection of all edges leading from this node.
-        return nodes.get(node);
+        Collection<Edge<T>> edges = (Collection<Edge<T>>)(Collection<?>)node;
+        return edges;
     }
 
     public Edge getEdgeBetween(T cityOne, T cityTwo){
@@ -147,7 +148,7 @@ public class ListGraph<T> implements Graph<T>, Serializable {
         // If any of the nodes are not in the graph, false is also returned. Uses an aid method for depth-first search through a graph.
     }
 
-    public List<Edge> getPath(T from, T to){
+    public List<Edge<T>> getPath(T from, T to){
         //takes two nodes and returns a list (java.util.List) with borders which represents a path between these nodes through the graph, or null if there is no path between these two nodes.
 
         //In the simplest variant it is therefore sufficient that the method returns some path between the two nodes,
