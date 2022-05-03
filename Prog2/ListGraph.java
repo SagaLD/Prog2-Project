@@ -1,4 +1,5 @@
 package Prog2;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -30,7 +31,6 @@ public class ListGraph<T> implements Graph<T>, Serializable {
         for(Edge<T> edge : edgeList){
                 T cityName = (T) edge.getDestination();
                 disconnect(nodeToRemove, cityName);
-                //disconnect(cityName, nodeToRemove);
         }
         nodes.remove(nodeToRemove);
     }
@@ -174,7 +174,6 @@ public class ListGraph<T> implements Graph<T>, Serializable {
         visited.add(currentCity);
         for (Edge edge : nodes.get(currentCity)) {
             if (!visited.contains(edge.getDestination())) {
-                //why is it Object?
                 depthFirstVisitAll((T) edge.getDestination(), visited);
             }
         }
