@@ -1,4 +1,5 @@
 package Prog2;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -9,10 +10,9 @@ public class Edge<T> implements Serializable {
 
     private final T destination;
     private final String name;
-    private final double weight; //"length"
+    private double weight; //"length or time"
 
     public Edge (T destination, String name, double weight){
-        //this.destinationFromNode = destinationFromNode;
         this.destination = Objects.requireNonNull(destination);
         this.name = Objects.requireNonNull(name);
 
@@ -37,10 +37,15 @@ public class Edge<T> implements Serializable {
         return (int) weight;
     }
 
-    //IS IT WORKING????
+    public void setWeight(int newWeight){
+        if (Double.isNaN(weight))
+            throw new IllegalArgumentException("weight assigned for Edge is Not a Number (NaN)");
+
+        this.weight = newWeight;
+    }
+
     public boolean equals(Object edgeToCompare){
         if(edgeToCompare instanceof Edge edge){
-            //return Object.equals(name, edge.name) && Object.equals(destination, edge.destination);
             return name.equals(edge.name) && destination.equals(edge.destination);
         }
         return false;
@@ -52,7 +57,6 @@ public class Edge<T> implements Serializable {
 
     @Override
     public String toString(){
-        //returns a string with edge information.
-        return "Edge[" + name + " to " + destination + "( weight: " + weight + " )]";
+        return "till " + destination + " med " + name + " tar " + (int) weight;
     }
 }

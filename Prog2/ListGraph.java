@@ -1,5 +1,4 @@
 package Prog2;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -16,26 +15,24 @@ public class ListGraph<T> implements Graph<T>, Serializable {
         nodes.putIfAbsent(node, new HashSet<>());
     }
 
-    public void remove(T node){
+    public void remove(T nodeToRemove){
         // receives a node and removes it from the graph. If the node is missing in The graph it should throw NoSuchElementException from the java.util package generated.
-        if(!nodes.containsKey(node)){
+        if(!nodes.containsKey(nodeToRemove)){
             throw new NoSuchElementException("No such node in the map");
         }
-        //When a node is removed, its edges should also be removed, and because the graph is misaligned, the edges should also be removed from the other nodes.
-        //remove edges from other nodes
-        T[] mapArray = (T[]) nodes.entrySet().toArray();
-
-        for(T city : mapArray){
-            for(Edge edge : nodes.get(city)){
-                if(edge.getDestination().equals(node)){
-                    disconnect(city, (T) node);
-                }
-            }
+            
+        // create new HashSet with edges of the argument node
+        // from edge name get destination
+        // and call disconnect method
+        // after for loop call nodes.remove(node)
+        
+        Set<Edge<T>> edgeList = new HashSet<>(getEdgesFrom(nodeToRemove));
+        for(Edge<T> edge : edgeList){
+                T cityName = (T) edge.getDestination();
+                disconnect(nodeToRemove, cityName);
+                //disconnect(cityName, nodeToRemove);
         }
-
-        //remove node
-        nodes.remove(node);
-
+        nodes.remove(nodeToRemove);
     }
 
     public void connect(T cityOne, T cityTwo, String name, int weight){
@@ -74,28 +71,35 @@ public class ListGraph<T> implements Graph<T>, Serializable {
             throw new IllegalStateException("No edge between nodes");
         }
 
-        // for (Edge<City> edge : nodes.get(nodeOne)){
-        //     if(edge.getDestination().equals(nodeTwo)){
-        //         Set<Edge> nodeOneEdges = nodes.get(nodeOne);
-        //         nodeOneEdges.remove(edge);
-
-        //         Set<Edge> nodeTwoEdges = nodes.get(nodeTwo);
-        //         nodeTwoEdges.remove(edge);
-        //     }
-        // }
-
         Edge edgeOne = getEdgeBetween(nodeOne, nodeTwo);
         Edge edgeTwo = getEdgeBetween(nodeTwo, nodeOne);
         nodes.get(nodeOne).remove(edgeOne);
-        nodes.get(nodeOne).remove(edgeTwo);
+        nodes.get(nodeTwo).remove(edgeTwo);
     }
 
-    //TODO method!
-    public void setConnectionWeight(T node1, T node2, int weight){
-        // takes two nodes and an integer (the new weight of the connection) and sets this weight as the new weight of the connection between these two nodes.
-
-        // If any of the nodes are missing in the graph or there is no border between these two nodes, the exception NoSuchElementException from the java.util package must be generated.
+    public void setConnectionWeight(T node1, T node2, int newWeight){
+        // takes two nodes and an integer (the new weight of the connection)
         // If the weight is negative, the IllegalArgumentException exception should be generated.
+        if(newWeight < 0){
+            throw new IllegalArgumentException("weight is negative");
+        }
+        
+        // If any of the nodes are missing in the graph or there is no edge between these two nodes, the exception NoSuchElementException from the java.util package must be generated.
+        
+        //if nodes are missing
+        Set<T> nodes = getNodes();
+
+        if (!nodes.contains(node1) || !nodes.contains(node2)){
+            throw new NoSuchElementException("Node is missing");
+        }
+
+        //get edges
+        Edge edgeOne = getEdgeBetween(node1, node2);
+        Edge edgeTwo = getEdgeBetween(node2, node1);
+        
+        //sets this new weight as the new weight of the connection between these two nodes.
+        edgeOne.setWeight(newWeight);
+        edgeTwo.setWeight(newWeight);
 
     }
 
@@ -109,33 +113,23 @@ public class ListGraph<T> implements Graph<T>, Serializable {
         return (Set<T>) keySet;
     }
 
-    //Den funkar i VPL!
     public Collection<Edge<T>> getEdgesFrom(T node){
         //If the node is missing in the graph, the exception should be NoSuchElementException is generated.
+        //the method takes a node and returns a copy of the collection of all edges leading from this node.
         if(!nodes.containsKey(node)){
             throw new NoSuchElementException("No such node in the map");
         }
 
         //the method takes a node and returns a copy of the collection of all edges leading from this node.
-        Collection<Edge<T>> edges = (Collection<Edge<T>>)(Collection<?>)node;
+        
+        Collection<Edge<T>> edges = new HashSet<>();
+        
+        edges = (Collection) nodes.get(node);
+
         return edges;
     }
 
     public Edge getEdgeBetween(T cityOne, T cityTwo){
-        // toString - returns a long string with strings taken from the toString methods of the nodes and the toString methods of the edges.
-        // Preferably with line breaks so that you get information about one node per line for improved readability.
-        return nodes.toString();
-    }
-
-    //TODO method!!
-    public boolean pathExists(T from, T to){
-        // takes two nodes and returns true if there is a path through the graph from one node to the other (possibly over many other nodes), otherwise false is returned.
-        return true;
-        // If any of the nodes are not in the graph, false is also returned. Uses an aid method for depth-first search through a graph.
-    }
-
-    //TODO method!!!
-    public List<Edge<T>> getPath(T from, T to){
         //If any of the nodes are missing in the graph, the exception should be NoSuchElementException is generated.
         if(!nodes.containsKey(cityOne) || !nodes.containsKey(cityTwo)){
             throw new NoSuchElementException("One of those cities is not in the map");
@@ -151,12 +145,80 @@ public class ListGraph<T> implements Graph<T>, Serializable {
         return null;
     }
 
-    @Override //TODO method!!!!
+    @Override
     public String toString(){
+        // toString - returns a long string with strings taken from the nodes toString methods and the edges toString methods.
+        StringBuilder sb = new StringBuilder();
+        for (T city : nodes.keySet()) {
+            sb.append(city).append(": ").append(nodes.get(city)).append("\n");
+        }
+
+        // Preferably with line breaks so that you get information about one node per line for improved readability.
+        return sb.toString();
+    }
+
+    public boolean pathExists(T from, T to){
+        // takes two nodes and returns true if there is a path through the graph from one node to the other (possibly over many other nodes), otherwise false is returned.
+        // If any of the nodes are not in the graph, false is also returned. Uses an aid method for depth-first search through a graph.
+        
+        if(!nodes.containsKey(from) || !nodes.containsKey(to)){
+            return false;
+        }
+
+        Set<T> visited = new HashSet<>();
+        depthFirstVisitAll(from, visited);
+        return visited.contains(to);
+    }
+
+    private void depthFirstVisitAll(T currentCity, Set<T> visited){
+        visited.add(currentCity);
+        for (Edge edge : nodes.get(currentCity)) {
+            if (!visited.contains(edge.getDestination())) {
+                //why is it Object?
+                depthFirstVisitAll((T) edge.getDestination(), visited);
+            }
+        }
+    }
+
+        public List<Edge<T>> getPath(T from, T to){
         //takes two nodes and returns a list (java.util.List) with borders which represents a path between these nodes through the graph, or null if there is no path between these two nodes.
 
         //In the simplest variant it is therefore sufficient that the method returns some path between the two nodes,
         //but voluntarily one can make a solution where returns the shortest path (in the number of edges that must be crossed) or the fastest route (taking into account taken to the weights of the edges).
-        return new ArrayList<>();
+
+        Map<T, T> connections = new HashMap<>();
+        connections.put(from, null);
+
+        LinkedList<T> queue = new LinkedList<>();
+        queue.add(from);
+        
+        while (!queue.isEmpty()) {
+            T city = queue.pollFirst();
+            for (Edge edge : nodes.get(city)) {
+                T destination = (T) edge.getDestination();
+                if (!connections.containsKey(destination)) {
+                    connections.put(destination, city);
+                    queue.add(destination);
+                }
+            }
+        }
+
+        if (!connections.containsKey(to)) {
+            return null;
+        }
+
+        return gatherPath(from, to, connections);
+    }
+
+    private List<Edge<T>> gatherPath(T from, T to, Map<T, T> connection) {
+        LinkedList<Edge<T>> path = new LinkedList<>();
+        T current = to;
+        while (!current.equals(from)) {
+            T next = connection.get(current);
+            Edge edge = getEdgeBetween(next, current);
+            path.addFirst(edge);
+            current = next;
+        }
+        return Collections.unmodifiableList(path);
     }
 }
